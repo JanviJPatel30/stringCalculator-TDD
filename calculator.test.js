@@ -23,3 +23,11 @@ test('returns sum when newlines are used as delimiters', () => {
 test('supports custom delimiter defined at the start', () => {
   expect(add("//;\n1;2")).toBe(3);
 });
+
+test('throws an exception when a negative number is used', () => {
+  expect(() => add("1,-2,3")).toThrow("negative numbers not allowed -2");
+});
+
+test('throws an exception when multiple negative numbers are used', () => {
+  expect(() => add("1,-2,-5,3")).toThrow("negative numbers not allowed -2,-5");
+});

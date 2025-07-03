@@ -2,16 +2,22 @@ function add(numbers) {
   // Specification 1: Return 0 for an empty string
   if (numbers === "") return 0;
 
-  // Specification 2: Return the number itself if only one number is given
-  if (!numbers.includes(",") && !numbers.includes("\n")) {
-    return parseInt(numbers);
+  let delimiter = /,|\n/; // Default delimiters: comma or newline
+
+  // Specification 5: Handle custom delimiter syntax like "//;\n1;2"
+  if (numbers.startsWith("//")) {
+    // Extract delimiter from the first line
+    const delimiterLine = numbers.split("\n")[0];
+    delimiter = new RegExp(numbers[2]); // e.g., ";" becomes /;/
+
+    // Remove delimiter declaration from input
+    numbers = numbers.split("\n")[1];
   }
 
-  // Specification 3: Replace newlines with commas to normalize delimiters
-  const normalized = numbers.replace(/\n/g, ",");
+  // Split numbers using the resolved delimiter(s)
+  const parts = numbers.split(delimiter);
 
-  // Specification 4: Split by comma and sum all numbers
-  const parts = normalized.split(",");
+  // Sum all the parts
   const sum = parts.reduce((acc, num) => acc + parseInt(num), 0);
 
   return sum;

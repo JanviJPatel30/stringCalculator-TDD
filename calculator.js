@@ -6,19 +6,25 @@ function add(numbers) {
 
   // Specification 5: Handle custom delimiter syntax like "//;\n1;2"
   if (numbers.startsWith("//")) {
-    // Extract delimiter from the first line
     const delimiterLine = numbers.split("\n")[0];
-    delimiter = new RegExp(numbers[2]); // e.g., ";" becomes /;/
-
-    // Remove delimiter declaration from input
-    numbers = numbers.split("\n")[1];
+    delimiter = new RegExp(numbers[2]); // Extract delimiter from line
+    numbers = numbers.split("\n")[1];   // Remove delimiter declaration
   }
 
-  // Split numbers using the resolved delimiter(s)
+  // Split the numbers using resolved delimiter(s)
   const parts = numbers.split(delimiter);
 
-  // Sum all the parts
-  const sum = parts.reduce((acc, num) => acc + parseInt(num), 0);
+  // Convert parts to integers
+  const parsedNumbers = parts.map(num => parseInt(num));
+
+  // Specification 6: Throw an exception for any negative numbers
+  const negatives = parsedNumbers.filter(n => n < 0);
+  if (negatives.length > 0) {
+    throw new Error(`negative numbers not allowed ${negatives.join(",")}`);
+  }
+
+  // Sum all valid numbers
+  const sum = parsedNumbers.reduce((acc, num) => acc + num, 0);
 
   return sum;
 }

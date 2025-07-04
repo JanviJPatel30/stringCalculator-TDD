@@ -46,3 +46,8 @@ test('getCalledCount returns how many times add was called', () => {
   calculator.add("3");
   expect(calculator.getCalledCount()).toBe(2);
 });
+
+test('ignores numbers greater than 1000', () => {
+  const calculator = new StringCalculator();
+  expect(calculator.add("2,1001")).toBe(2);
+});

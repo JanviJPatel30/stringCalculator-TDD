@@ -1,37 +1,43 @@
-const { add } = require('./calculator');
 const { StringCalculator } = require('./calculator');
 
-
 test('returns 0 for an empty string', () => {
-  expect(add("")).toBe(0);
+  const calculator = new StringCalculator();
+  expect(calculator.add("")).toBe(0);
 });
 
 test('returns number when a single number is provided', () => {
-  expect(add("1")).toBe(1);
+  const calculator = new StringCalculator();
+  expect(calculator.add("1")).toBe(1);
 });
 
 test('returns sum when two comma-separated numbers are provided', () => {
-  expect(add("1,2")).toBe(3);
+  const calculator = new StringCalculator();
+  expect(calculator.add("1,2")).toBe(3);
 });
 
 test('returns sum for multiple comma-separated numbers', () => {
-  expect(add("1,2,3,4")).toBe(10);
+  const calculator = new StringCalculator();
+  expect(calculator.add("1,2,3,4")).toBe(10);
 });
 
 test('returns sum when newlines are used as delimiters', () => {
-  expect(add("1\n2,3")).toBe(6);
+  const calculator = new StringCalculator();
+  expect(calculator.add("1\n2,3")).toBe(6);
 });
 
 test('supports custom delimiter defined at the start', () => {
-  expect(add("//;\n1;2")).toBe(3);
+  const calculator = new StringCalculator();
+  expect(calculator.add("//;\n1;2")).toBe(3);
 });
 
 test('throws an exception when a negative number is used', () => {
-  expect(() => add("1,-2,3")).toThrow("negative numbers not allowed -2");
+  const calculator = new StringCalculator();
+  expect(() => calculator.add("1,-2,3")).toThrow("negative numbers not allowed -2");
 });
 
 test('throws an exception when multiple negative numbers are used', () => {
-  expect(() => add("1,-2,-5,3")).toThrow("negative numbers not allowed -2,-5");
+  const calculator = new StringCalculator();
+  expect(() => calculator.add("1,-2,-5,3")).toThrow("negative numbers not allowed -2,-5");
 });
 
 test('getCalledCount returns how many times add was called', () => {
@@ -40,4 +46,3 @@ test('getCalledCount returns how many times add was called', () => {
   calculator.add("3");
   expect(calculator.getCalledCount()).toBe(2);
 });
-

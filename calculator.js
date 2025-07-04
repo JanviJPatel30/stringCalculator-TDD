@@ -14,36 +14,36 @@ class StringCalculator {
     // Step 2-5: Use default delimiters: comma or newline
     let delimiter = /,|\n/;
 
-    // Step 6: Handle custom delimiters like //;\n1;2
+    // Step 6: Handle custom delimiters (single or multiple with [ ])
     if (numbers.startsWith("//")) {
       const delimiterLine = numbers.split("\n")[0];
 
-      // Support multi-character or multiple delimiters if wrapped in brackets
+      // Match delimiters inside square brackets [ ]
       const matches = delimiterLine.match(/\[(.*?)\]/g);
       if (matches) {
-        // Extract and escape multiple delimiters
+        // Step 10+: Support multiple and multi-char delimiters
         const delimiters = matches.map(d =>
           d.slice(1, -1).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
         );
-        delimiter = new RegExp(delimiters.join('|')); // Combine all delimiters
+        delimiter = new RegExp(delimiters.join('|'));
       } else {
-        // Single-character delimiter fallback
+        // Handle simple case like //;\n
         delimiter = new RegExp(numbers[2]);
       }
 
-      // Remove delimiter declaration line
+      // Strip delimiter declaration line
       numbers = numbers.split("\n")[1];
     }
 
-    // Split string using determined delimiter(s)
+    // Split input string using detected delimiter(s)
     const parts = numbers.split(delimiter);
 
-    // Convert string parts to integers (no Step 9 filtering yet)
+    // Step 9: Convert strings to integers, ignore >1000, remove NaN
     const parsedNumbers = parts
       .map(num => parseInt(num))
-      .filter(n => !isNaN(n)); // Only keep valid numbers
+      .filter(n => !isNaN(n) && n <= 1000); 
 
-    // Step 7 (from earlier): Throw error for negative numbers
+    // Step 8: Throw error if any negative numbers are found
     const negatives = parsedNumbers.filter(n => n < 0);
     if (negatives.length > 0) {
       throw new Error(`negative numbers not allowed ${negatives.join(",")}`);
@@ -53,7 +53,7 @@ class StringCalculator {
     return parsedNumbers.reduce((acc, num) => acc + num, 0);
   }
 
-  // Step 7: Return number of times add() was called
+  // Step 7: Return how many times add() has been called
   getCalledCount() {
     return this.callCount;
   }
